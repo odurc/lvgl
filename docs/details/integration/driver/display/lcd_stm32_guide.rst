@@ -138,32 +138,40 @@ Step-by-step instructions
 
 	.. code-block:: c
 
+		/* USER CODE BEGIN PD */
 		#define LCD_H_RES	240
 		#define LCD_V_RES	320
 		#define BUS_SPI1_POLL_TIMEOUT 0x1000U
+		/* USER CODE END PD */
 
 
 #. Add the following lines to the Private variables:
 
 	.. code-block:: c
 
+		/* USER CODE BEGIN PV */
 		osThreadId LvglTaskHandle;
 		lv_display_t *lcd_disp;
 		volatile int lcd_bus_busy = 0;
+		/* USER CODE END PV */
 
 #. Add the following line to the Private function prototypes:
 
 	.. code-block:: c
 
+		/* USER CODE BEGIN PFP */
 		void ui_init(lv_display_t *disp);
 		void LVGL_Task(void const *argument);
+		/* USER CODE END PFP */
 
 #. Add the following lines after USER CODE BEGIN RTOS_THREADS:
 
 	.. code-block:: c
 
+		/* USER CODE BEGIN RTOS_THREADS */
 		osThreadDef(LvglTask, LVGL_Task, osPriorityIdle, 0, 1024);
 		LvglTaskHandle = osThreadCreate(osThread(LvglTask), NULL);
+		/* USER CODE END RTOS_THREADS */
 
 #. Copy and paste the hardware initialization and the transfer callback functions from the example code after USER CODE BEGIN 4:
 
@@ -301,20 +309,20 @@ Step-by-step instructions
 
 		void ui_init(lv_display_t *disp)
 		{
-			lv_obj_t *obj;
-
+			lv_obj_t *widget;
+	
 			/* set screen background to white */
 			lv_obj_t *scr = lv_screen_active();
 			lv_obj_set_style_bg_color(scr, lv_color_white(), 0);
 			lv_obj_set_style_bg_opa(scr, LV_OPA_100, 0);
 
 			/* create label */
-			obj = lv_label_create(scr);
-            lv_obj_set_align(widget, LV_ALIGN_CENTER);
-            lv_obj_set_height(widget, LV_SIZE_CONTENT);
-            lv_obj_set_width(widget, LV_SIZE_CONTENT);
-            lv_obj_set_style_text_font(widget, &lv_font_montserrat_14, 0);
-            lv_obj_set_style_text_color(widget, lv_color_black(), 0);
-            lv_label_set_text(widget, "Hello World!");
+			widget = lv_label_create(scr);
+			lv_obj_set_align(widget, LV_ALIGN_CENTER);
+			lv_obj_set_height(widget, LV_SIZE_CONTENT);
+			lv_obj_set_width(widget, LV_SIZE_CONTENT);
+			lv_obj_set_style_text_font(widget, &lv_font_montserrat_14, 0);
+			lv_obj_set_style_text_color(widget, lv_color_black(), 0);
+			lv_label_set_text(widget, "Hello World!");
 		}
 
